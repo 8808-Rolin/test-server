@@ -15,6 +15,11 @@ var respObj = require('./obj')
 var server = http.createServer()
 
 server.on('request',function(req,resp){
+    resp.writeHead(200,{
+        "Content-type":"application/json",
+        "Access-Control-Allow-Origin":"*"
+    })
+    
     var time=sd.format(new Date(), 'YYYY-MM-DD HH:mm:ss');
     console.log("收到客户端的请求,请求路径是:" + req.url+"\n请求时间："+time);
     
@@ -22,7 +27,7 @@ server.on('request',function(req,resp){
     const {query,pathname} = durl.parse(req.url,true)
 
     if(pathname === '/api/user/login'){
-        resp.writeHead(200,{"Content-type":"application/json"})
+        
         type = eval(query.loginType)
         account = query.account
         password = query.password
