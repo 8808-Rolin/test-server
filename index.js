@@ -11,6 +11,7 @@ var durl = require('url')
 const path = require("path")
 var sd = require('silly-datetime')
 var respObj = require('./obj')
+var qs = require('querystring')
 
 var server = http.createServer()
 
@@ -30,12 +31,20 @@ server.on('request',function(req,resp){
     const {query,pathname} = durl.parse(req.url,true)
 
     if(pathname === '/api/user/login'){
-        
-        type = eval(query.loginType)
-        account = query.account
-        password = query.password
-        console.log(type,account,password)
-        if(type === 0){ //学号登陆
+        var post = ""
+
+        var body = "";
+        req.on('data',chunk=>{
+            post += chunk
+        })
+        req.on('end',()=>{
+            post = qs.parse(post)
+            console.log(post)
+            var type = eval(post['loginType'])
+            var account = post.account
+            var password = post.password
+            
+            if(type === 0){ //学号登陆
             if(account === '2019060703300' && password === '5f4dcc3b5aa765d61d8327deb882cf99'){
                 body = {
                     code:0,
@@ -74,6 +83,13 @@ server.on('request',function(req,resp){
                 }
                 resp.end(JSON.stringify(respObj.out("使用了错误的登陆方式",body)))
         }
+        
+        
+        })
+        
+
+
+        
     }
 })
 
