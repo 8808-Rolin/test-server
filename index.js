@@ -17,7 +17,10 @@ var server = http.createServer()
 server.on('request',function(req,resp){
     resp.writeHead(200,{
         "Content-type":"application/json",
-        "Access-Control-Allow-Origin":"*"
+        "Access-Control-Allow-Origin":"*",
+        "Access-Control-Allow-Methods":"PUT,GET,POST",
+        "Access-Control-Allow-Headers":"X-Requested-With",
+        "Access-Control-Allow-Headers":"Content-Type"
     })
     
     var time=sd.format(new Date(), 'YYYY-MM-DD HH:mm:ss');
